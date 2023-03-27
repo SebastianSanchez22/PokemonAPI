@@ -1,32 +1,46 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { Pokemon } from "../models/Pokemon";
 import { fetchPokemon } from "../apis/FetchPokemon";
+import { formatName } from "../utils/formatName";
 
-export const ShowPokemon = () => {
-    //const {name} = useParams();
+export const ShowPokemon = (current:any) => {
     const [pokemon, setPokemon] = useState<Pokemon>();
 
+    const [showModal, setShowModal] = useState<boolean>(false);
+
     useEffect(() => {
-        const fetchCurrent = async() =>{   
-                const currentPokemon = await fetchPokemon("dragonite");
-                setPokemon(currentPokemon);
+        const fetchCurrent = async() =>{ 
+            const currentPokemon = await fetchPokemon(formatName(current.namePokemon.toLowerCase()));
+                
+            setPokemon(currentPokemon);
         }
         fetchCurrent();
-    })
+    }, [])
     return (
         <>
-        <h1>{pokemon?.id}</h1>
-        <span>Name: {pokemon?.name} </span>
-        <img src={pokemon?.gif} alt={pokemon?.name} />
-        <span>HP: {pokemon?.hp} </span>
-        <span>Attack: {pokemon?.attack} </span>
-        <span>Defense: {pokemon?.defense} </span>
-        <span>Special attack: {pokemon?.specialAttack} </span>
-        <span>Special defense: {pokemon?.specialDefense} </span>
-        <span>Speed: {pokemon?.speed} </span>
-        <span>Type 1: {pokemon?.type[0]} </span>
-        <span>Type 2: {pokemon?.type[1]} </span>
+        <div>
+            <h1 className="text-lg font-bold w-full flex justify-center items-center">{pokemon?.id}</h1>
+            <span className="flex justify-center items-center capitalize text-4xl">{pokemon?.name} </span>
+            <div className="flex justify-center pb-8">
+                <img onClick={() => setShowModal(!showModal)} src={pokemon?.gif} alt={pokemon?.name} />
+            </div>
+        </div>
+        {
+            !showModal? (null) : (
+                <div className="text-lg font-bold w-full flex justify-center items-center">
+                    <h2 className="">HP: {pokemon?.hp} </h2>
+                    <h2>Attack: {pokemon?.attack}</h2>
+                    <h2>Defense: {pokemon?.defense}</h2>
+                    <h2>Special attack: {pokemon?.specialAttack}</h2>
+                    <h2>Special defense: {pokemon?.specialDefense}</h2>
+                    <h2>Speed: {pokemon?.speed}</h2>
+                    {pokemon?.type.map((element:any, index) => {
+                        return (<span>{`type ${index+1}: ${element}`} </span>)
+                    })}
+                </div>
+            )
+        }
+        
         </>
     )
 }

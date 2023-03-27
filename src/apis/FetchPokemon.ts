@@ -6,11 +6,10 @@ export async function fetchPokemon(idPokemon:string):Promise<Pokemon> {
         throw new Error('Failed to fetch Pokemon');
     }
     const results = await response.json();
-    console.log(results)
     const pokemonData = {
         name:results.name,
         id:results.id,
-        type:[results.types[0].type.name, results.types[1].type.name],
+        type:results.types.map((element:any) => (element?.type.name)),
         gif:`https://img.pokemondb.net/sprites/black-white/anim/normal/${idPokemon.toLowerCase()}.gif`,
         hp:results.stats[0].base_stat,
         attack:results.stats[1].base_stat,

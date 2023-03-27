@@ -1,12 +1,12 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { ShowPokemon } from './components/PokemonInfo';
+
+import { AllPokemons } from './components/AllPokemons';
 
 function App() {
   return (
     <>
-    <ShowPokemon/>
+    <h1 className="text-6xl italic font-bold flex justify-center items-center py-6 mt-5">PokeAPI</h1>
+    <AllPokemons></AllPokemons>
     </>
   );
 }

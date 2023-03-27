@@ -1,7 +1,7 @@
 export interface Pokemon {
     name:string,
     id:number,
-    type:string[],
+    type:any[],
     gif:string,
     hp:number,
     attack:number,
